@@ -1,17 +1,26 @@
-// import { supabase } from '@/services/supabase';
+import { supabase } from '@/services/supabase';
 import { Task } from '@/types';
-// import * as Haptics from 'expo-haptics';
-// import { Alert } from 'react-native';
 
 // Add here you're table name, make sure to double check it too
 // add you table name here
-const tableName = '';
+const tableName = 'tasks';
 
 export const fetchTask = async (
     setGetTask: (tasks: Task[]) => void, 
     setLoading: (loading: boolean) => void
 ) => {
-    // fetch task: This is were you "Read/Fetch the data from you're database"
+    setLoading(true);
+
+    const { data, error } = await supabase
+        .from(tableName)
+        .select('*')
+        .order('id', { ascending: false });
+
+    if (!error && data) {
+        setGetTask(data);
+    }
+
+    setLoading(false);
 };
 
 export const handleSubmit = async (
@@ -23,7 +32,26 @@ export const handleSubmit = async (
     setGetTask: (tasks: Task[]) => void,
     setLoading: (loading: boolean) => void
 ) => {
-    // handle sumbit: This is were you "Create" the data to put in you're database
+    setLoading(true);
+
+    await supabase.from(tableName).insert([
+        {
+            title: newTitle,
+            description: newDesc,
+        },
+    ]);
+
+    setNewTitle('');
+    setNewDesc('');
+    setIsAddModalVisible(false);
+
+    const { data } = await supabase.from(tableName).select('*');
+
+    if (data) {
+        setGetTask(data);
+    }
+
+    setLoading(false);
 };
 
 export const updateTask = async (
@@ -35,7 +63,28 @@ export const updateTask = async (
     setGetTask: (tasks: Task[]) => void,
     setLoading: (loading: boolean) => void
 ) => {
-   // update task: This is were you "Update" any changes you apply in the database
+    if (!selectedTask) return;
+
+    setLoading(true);
+
+    await supabase
+        .from(tableName)
+        .update({
+            title: updateTitle,
+            description: updateDesc,
+        })
+        .eq('id', selectedTask.id);
+
+    setIsEditModalVisible(false);
+    setSelectedTask(null);
+
+    const { data } = await supabase.from(tableName).select('*');
+
+    if (data) {
+        setGetTask(data);
+    }
+
+    setLoading(false);
 };
 
 export const deleteTask = async (
@@ -43,5 +92,18 @@ export const deleteTask = async (
     setGetTask: (tasks: Task[]) => void,
     setLoading: (loading: boolean) => void
 ) => {
-    // delete task: This is were you "Delete" a notes/task
+    setLoading(true);
+
+    await supabase
+        .from(tableName)
+        .delete()
+        .eq('id', id);
+
+    const { data } = await supabase.from(tableName).select('*');
+
+    if (data) {
+        setGetTask(data);
+    }
+
+    setLoading(false);
 };

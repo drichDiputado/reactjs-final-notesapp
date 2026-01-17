@@ -1,10 +1,26 @@
-// import { EditNoteModalProps } from "@/types/notemodal";
+import { EditNoteModalProps } from "@/types/notemodal";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import React from 'react';
 import { Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function EditNoteModal({
-// mising datatypes: add the datatypes
+    visible,
+    onClose,
+    onUpdate,
+    title,
+    description,
+    onTitleChange,
+    onDescriptionChange,
+    onDelete,
+}: {
+    visible: boolean;
+    onClose: () => void;
+    onUpdate: () => void;
+    title: string;
+    description: string;
+    onTitleChange: (text: string) => void;
+    onDescriptionChange: (text: string) => void;
+    onDelete: () => void;
 }) {
     return (
         <Modal
@@ -44,17 +60,19 @@ export default function EditNoteModal({
                 </ScrollView>
 
                 {/* Delete Button */}
-                <TouchableOpacity onPress={onDelete} className="absolute w-10 h-10 items-center justify-center"
-                        style={{
-                            bottom: 35,
-                            right: 35,
-                            elevation: 8,
-                            shadowColor: '#000',
-                            shadowOffset: { width: 0, height: 0 },
-                            shadowOpacity: 0.2,
-                            shadowRadius: 8,
-                        }}  
-                    >
+                <TouchableOpacity
+                    onPress={onDelete}
+                    className="absolute w-10 h-10 items-center justify-center"
+                    style={{
+                        bottom: 35,
+                        right: 35,
+                        elevation: 8,
+                        shadowColor: '#000',
+                        shadowOffset: { width: 0, height: 0 },
+                        shadowOpacity: 0.2,
+                        shadowRadius: 8,
+                    }}
+                >
                     <FontAwesome6 name="trash" size={24} color="red" />
                 </TouchableOpacity>
             </View>

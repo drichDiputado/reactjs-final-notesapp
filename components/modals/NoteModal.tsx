@@ -1,9 +1,23 @@
-// import { NoteModalProps } from "@/types/notemodal";
+import { NoteModalProps } from "@/types/notemodal";
 import React from 'react';
 import { Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function NoteModal({
-// mising datatypes: add the datatypes
+    visible,
+    onClose,
+    onSubmit,
+    title,
+    description,
+    onTitleChange,
+    onDescriptionChange,
+}: {
+    visible: boolean;
+    onClose: () => void;
+    onSubmit: () => void;
+    title: string;
+    description: string;
+    onTitleChange: (text: string) => void;
+    onDescriptionChange: (text: string) => void;
 }) {
     return (
         <Modal

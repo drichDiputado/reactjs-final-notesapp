@@ -1,4 +1,4 @@
-// import { supabase } from '@/services/supabase';
+import { supabase } from '@/services/supabase';
 import * as Haptics from 'expo-haptics';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -57,8 +57,10 @@ export default function SignUp() {
       validateLoginInput(email, password)
 
       // This here will be you're auth for signUp using the 'supabase' own tools
-      // const { error } = await supabase.auth.signUp({
-      // });
+      const { error } = await supabase.auth.signUp({
+  email,
+  password,
+});
 
     } catch (err) {
       setError('An unexpected error occurred');
